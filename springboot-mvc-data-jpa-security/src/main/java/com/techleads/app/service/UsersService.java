@@ -4,15 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.techleads.app.model.Users;
-import com.techleads.app.repository.SecurityRepository;
+import com.techleads.app.repository.UsersRepository;
 
 @Service
-public class SecurityService {
+public class UsersService {
 	@Autowired
-	private SecurityRepository securityRepository;
+	private UsersRepository userRepository;
 	
 	public Users saveUser(Users user) {
-		Users save = securityRepository.save(user);
+		Users save = userRepository.save(user);
 		return save;
 	}
 

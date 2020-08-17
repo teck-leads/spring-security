@@ -6,15 +6,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.techleads.app.model.Users;
-import com.techleads.app.service.SecurityService;
+import com.techleads.app.service.UsersService;
 
 @Controller
 public class SecurityController {
 	@Autowired
-	private SecurityService securityService;
+	private UsersService usersService;
 	
 	@GetMapping("/register")
 	public String showReg() {
@@ -23,7 +22,9 @@ public class SecurityController {
 	
 	@PostMapping("/save")
 	public String saveUser(@ModelAttribute Users user, Model model) {
-		Users saveUser = securityService.saveUser(user);
+		
+		
+		Users saveUser = usersService.saveUser(user);
 		String message ="User saved "+saveUser.getId();
 		
 		model.addAttribute("msg: "+message);

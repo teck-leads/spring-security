@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2>Register page</h2>
+
+
+	<form action="save" method="post">
+		<pre>
+	
+	NAME : <input type="text" name="userName">
+	email : <input type="text" name="email">
+	password : <input type="text" name="password">
+	Roles : <input type="checkbox" name="roles" value="ADMIN">: ADMIN <input type="checkbox" name="roles" value="EMP">: EMPLOYEE
+	<input type="submit" value="Register">
+	<a th:href="@{/logout}">Logout</a>
+	</pre>
+	</form>
+	<span th:text="${msg}"></span>
+</body>
+</html>

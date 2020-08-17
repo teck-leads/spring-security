@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.techleads.app.model.Users;
 
-public interface SecurityRepository extends JpaRepository<Users, Integer> {
+public interface UsersRepository extends JpaRepository<Users, Integer> {
 
 }

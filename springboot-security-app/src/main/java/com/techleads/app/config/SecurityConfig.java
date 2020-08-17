@@ -29,10 +29,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-		.antMatchers("/home").permitAll() //type 1
+		.antMatchers("/home","/register","/save").permitAll() //type 1
 		
+		.antMatchers("/h2-console/**").permitAll()
+	
 		.antMatchers("/emp").hasAuthority("EMP")
-		.antMatchers("/std").hasAuthority("STUDENT") //type 2
+		//.antMatchers("/std").hasAuthority("STUDENT") //type 2
+		.antMatchers("/std").hasAnyAuthority("STUDENT","ADMIN") 
 		.antMatchers("/admin").hasAuthority("ADMIN")
 		
 		.antMatchers("/common").authenticated() //type 3
@@ -48,18 +51,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		//logout
 		.and()
 		.logout()
+		//.logoutRequestMatcher(new AntPathRequestMatcher("/signout"))
 		
 		
 		// access denied exception for wrong role access
 		.and()
 		.exceptionHandling()
-		.accessDeniedPage("/denied")
+		.accessDeniedPage("/denied");
 		
-		
-		
-		
-		
-		;
+		 http.csrf().ignoringAntMatchers("/h2-console/**");
+	     http.headers().frameOptions().sameOrigin();;
+
 	}
 	
 	//Authorization
