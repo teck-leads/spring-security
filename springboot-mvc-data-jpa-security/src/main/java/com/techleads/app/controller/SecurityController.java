@@ -27,7 +27,7 @@ public class SecurityController {
 		Users saveUser = usersService.saveUser(user);
 		String message ="User saved "+saveUser.getId();
 		
-		model.addAttribute("msg: "+message);
+		model.addAttribute("msg",message);
 		return "register";
 	}
 
