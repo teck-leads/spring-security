@@ -39,7 +39,7 @@ public class Users implements Serializable {
 	private String email;
 	//@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	//private Set<Roles> roles=new HashSet<>();
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(
 	name="user_roles",
 	joinColumns= @JoinColumn(name="user_id")

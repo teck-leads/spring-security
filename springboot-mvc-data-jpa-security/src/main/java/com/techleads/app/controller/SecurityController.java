@@ -16,9 +16,13 @@ public class SecurityController {
 	private UsersService usersService;
 	
 	@GetMapping("/register")
-	public String showReg() {
+	public String showReg(Model model) {
+		model.addAttribute("user", new Users());
 		return "register";
 	}
+	
+	
+
 	
 	@PostMapping("/save")
 	public String saveUser(@ModelAttribute Users user, Model model) {
@@ -26,7 +30,7 @@ public class SecurityController {
 		
 		Users saveUser = usersService.saveUser(user);
 		String message ="User saved "+saveUser.getId();
-		
+		model.addAttribute("user", new Users());
 		model.addAttribute("msg",message);
 		return "register";
 	}

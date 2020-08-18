@@ -11,17 +11,21 @@
 	<h2>Register page</h2>
 
 
-	<form action="save" method="post">
+	<form th:action="@{/save}" method="post" th:object=${user}>
 		<pre>
 	
-	NAME : <input type="text" name="userName">
-	email : <input type="text" name="email">
-	password : <input type="text" name="password">
-	Roles : <input type="checkbox" name="roles" value="ADMIN">: ADMIN <input type="checkbox" name="roles" value="EMP">: EMPLOYEE
+	NAME : <input type="text" th:field="*{userName}">
+	email : <input type="text" th:field="*{email}">
+	password : <input type="text" th:field="*{password}">
+	Roles : <input type="checkbox" th:field="*{roles}" value="ADMIN">: ADMIN <input type="checkbox" th:field="*{roles}" value="EMP">: EMPLOYEE
 	<input type="submit" value="Register">
 	<a th:href="@{/logout}">Logout</a>
 	</pre>
 	</form>
 	<span th:text="${msg}"></span>
+	
+	
+
+<span th:text="${message}"></span>
 </body>
 </html>
