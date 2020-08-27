@@ -16,13 +16,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Users implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue( strategy = GenerationType.IDENTITY )
 	private long id;
-	//private String fullname;
+	private String fullname;
 	private String username;
 	private String password;
-	private boolean active;
-	private String roles;
 
 }

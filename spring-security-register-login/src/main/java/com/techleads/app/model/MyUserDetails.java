@@ -1,9 +1,7 @@
 package com.techleads.app.model;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Collections;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,28 +15,23 @@ public class MyUserDetails implements UserDetails {
 	private static final long serialVersionUID = 1L;
 	private String username;
 	private String password;
-	private boolean active;
-	private List<GrantedAuthority> authorities;
+	
 	public MyUserDetails() {
 	}
 	
 	public MyUserDetails(Users user) {
 	 this.username=user.getUsername();
 	 this.password=user.getPassword();
-	 this.active=user.isActive();
-	 this.authorities=Arrays.stream(user.getRoles().split(","))
-			 .map(SimpleGrantedAuthority::new)
-			 .collect(Collectors.toList());
+
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return authorities;
+		return Collections.singleton(new SimpleGrantedAuthority("USER"));
 	}
 
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
 		return password;
 	}
 
@@ -64,9 +57,10 @@ public class MyUserDetails implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return active;
+		return true;
 	}
 
+	
 	
 
 }
