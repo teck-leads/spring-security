@@ -1,0 +1,13 @@
+{
+  "username": "teja",
+  "password": "pwd",
+ "active": true,
+  "roles": "ROLE_ADMIN"
+}
+
+{
+  "username": "madhav",
+  "password": "pwd",
+ "active": true,
+  "roles": "ROLE_USER"
+}
