@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.techleads.app.model.Users;
-import com.techleads.app.service.MyUserDetailsSevice;
+import com.techleads.app.model.User;
+import com.techleads.app.service.MyUserDetailsService;
 
 @RestController
 public class UserController {
 
 	@Autowired
-	private MyUserDetailsSevice service;
+	private MyUserDetailsService service;
 
 	@GetMapping("/")
 	public String home() {
@@ -30,10 +30,10 @@ public class UserController {
 		return ("<h1>Welcome user</h1>");
 	}
 
-	@PostMapping("/register")
-	public ResponseEntity<Users> register(@RequestBody Users user) {
+	@PostMapping("/user/register")
+	public ResponseEntity<User> register(@RequestBody User user) {
 
-		Users saveUser = service.saveUser(user);
+		User saveUser = service.saveUser(user);
 		return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
 	}
 

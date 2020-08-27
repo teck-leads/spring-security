@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
 	@Autowired
@@ -29,9 +29,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 		.antMatchers("/admin").hasRole("ADMIN")
 		.antMatchers("/users").hasAuthority("USER")
-		.antMatchers("/","/register","/h2-console/**").permitAll()
-		.and().formLogin();
-		 http.csrf().ignoringAntMatchers("/register","/h2-console/**");
+		.antMatchers("/","/user/register","/register","/login","/h2-console/**").permitAll()
+		.and().formLogin()
+		.loginPage("/login")
+		.permitAll();
+		 http.csrf().ignoringAntMatchers("/user/register","/register","/login","/h2-console/**");
 	     http.headers().frameOptions().sameOrigin();
 	}
 	
