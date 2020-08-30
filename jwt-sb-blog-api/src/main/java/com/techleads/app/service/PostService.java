@@ -1,5 +1,7 @@
 package com.techleads.app.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,21 @@ public class PostService {
 		} catch (Exception e) {
 			throw e;
 		}
+
+	}
+	
+	public PostDTO findPostById(Integer id) {
+		PostDTO dto = new PostDTO();
+		Optional<Posts> findById = postRepository.findById(id);
+
+		if (findById.isPresent()) {
+			Posts post = findById.get();
+			dto.setPost_id(post.getPostId());
+			dto.setTitle(post.getPostTitle());
+			dto.setBody(post.getPostBody());
+
+		}
+		return dto;
 
 	}
 

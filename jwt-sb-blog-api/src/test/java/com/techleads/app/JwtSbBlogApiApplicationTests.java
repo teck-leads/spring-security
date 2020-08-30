@@ -160,6 +160,23 @@ class JwtSbBlogApiApplicationTests {
 			assert (false);
 		}
 	}
+	
+	@Test
+	public void test5_getPostById() {
+		try {
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("authorization", "Bearer " + jwt);
+			JSONObject json = (JSONObject) (new JSONObject(
+					template.exchange("http://localhost:" + port + "/api/getPost/" + postId, HttpMethod.GET,
+							new HttpEntity<String>(headers), String.class).getBody())).get("data");
+			assertEquals(json.getInt("post_id"), postId);
+			assertEquals(json.getString("title"), postTitle);
+			assertEquals(json.getString("body"), postBody);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert (false);
+		}
+	}
 
 	
 }

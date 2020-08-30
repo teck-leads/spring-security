@@ -13,12 +13,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techleads.app.dto.LoginDto;
 import com.techleads.app.dto.PostDTO;
+import com.techleads.app.model.PostData;
 import com.techleads.app.model.Posts;
 import com.techleads.app.model.PostsData;
 import com.techleads.app.model.UserRequest;
@@ -136,6 +138,26 @@ public class UserController {
 				});
 
 				data.setData(dtos);
+				return new ResponseEntity<>(data, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(data, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+
+	}
+	
+	
+	@GetMapping(value = { "/api/getPost/{id}" })
+	public ResponseEntity<PostData> findByPostId(@PathVariable("id") Integer id,Principal pricipal) {
+		try {
+			PostData data = new PostData();
+			if (null != pricipal) {
+				Users user = userService.findByEmail(pricipal.getName());
+				PostDTO dto = postService.findPostById(id);
+				data.setData(dto);
+				data.setUsername(user.getName());
 				return new ResponseEntity<>(data, HttpStatus.OK);
 			} else {
 				return new ResponseEntity<>(data, HttpStatus.OK);
