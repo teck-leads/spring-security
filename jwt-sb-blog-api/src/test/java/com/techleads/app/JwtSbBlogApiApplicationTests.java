@@ -75,6 +75,7 @@ class JwtSbBlogApiApplicationTests {
 			assert (false);
 		}
 	}
+
 	@Test
 	public void test2_login() {
 		try {
@@ -83,11 +84,7 @@ class JwtSbBlogApiApplicationTests {
 			obj.setPassword(pass);
 			JSONObject json = new JSONObject(
 					template.postForEntity("http://localhost:" + port + "/login/", obj, String.class).getBody());
-			
-			
 			assertEquals(json.getString("data"), "Invalid Username or Password");
-			
-			
 			obj.setEmail(user + "@gmail.com");
 			json = new JSONObject(
 					template.postForEntity("http://localhost:" + port + "/login/", obj, String.class).getBody());

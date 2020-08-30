@@ -66,6 +66,18 @@ public class UserService implements UserDetailsService {
 		}
 
 	}
+	
+	public Users findByEmail(String email) {
+		Optional<Users> findByUsername = userRepository.findByEmail(email);
+
+//		if (findByUsername.isEmpty()) {
+		if (findByUsername==null) {
+			throw new UsernameNotFoundException("User Not found");
+		} else {
+			return findByUsername.get();
+		}
+
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

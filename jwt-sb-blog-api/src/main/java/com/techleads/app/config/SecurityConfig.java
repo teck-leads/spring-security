@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable()
 
 
-				.authorizeRequests().antMatchers("/register", "/login/", "/h2-console/**").permitAll()
+				.authorizeRequests().antMatchers("/api/getPostCount","/register", "/login/", "/h2-console/**").permitAll()
 				.anyRequest()
 				.authenticated().and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
 				.and()
@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// register filter from 2nd request onwards
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 
-		http.csrf().ignoringAntMatchers("/register", "/login/", "/h2-console/**");
+		http.csrf().ignoringAntMatchers("/api/getPostCount","/register", "/login/", "/h2-console/**");
 		http.headers().frameOptions().sameOrigin();
 	}
 
