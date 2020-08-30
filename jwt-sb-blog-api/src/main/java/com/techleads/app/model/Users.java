@@ -43,7 +43,7 @@ public class Users implements Serializable {
     private String password;
     
     @JsonManagedReference
-    @OneToMany(mappedBy = "publishedBy", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "publishedBy", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Posts> postsList=new ArrayList<>();
     
     @ElementCollection(fetch = FetchType.EAGER)

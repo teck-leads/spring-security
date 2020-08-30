@@ -29,6 +29,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.techleads.app.dto.LoginDto;
+import com.techleads.app.dto.PostDTO;
 
 @TestMethodOrder(Alphanumeric.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -101,6 +102,46 @@ class JwtSbBlogApiApplicationTests {
 					new HttpEntity<String>(headers), String.class).getBody());
 			postCount = json.getInt("data");
 			assert (postCount >= 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert (false);
+		}
+	}
+
+	@Test
+	public void test3_publishPost() {
+		try {
+			PostDTO post = new PostDTO();
+			postTitle = generateString();
+			postBody = generateString();
+			post.setTitle(postTitle);
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("authorization", "Bearer " + (char) ((int) jwt.charAt(0) + 1) + jwt.substring(1, jwt.length()));
+			HttpEntity<PostDTO> request = new HttpEntity<>(post, headers);
+			ResponseEntity<String> res = template.postForEntity("http://localhost:" + port + "/api/publish", request,
+					String.class);
+			assert (res.getBody().contains("Unable to read JSON value"));
+			assertEquals(500, res.getStatusCodeValue());
+			headers.set("authorization", "Bearer " + jwt);
+			request = new HttpEntity<>(post, headers);
+			JSONObject json = new JSONObject(template
+					.postForEntity("http://localhost:" + port + "/api/publish", request, String.class).getBody());
+			assertEquals(json.getString("data"), "body should not be empty");
+			post.setBody(postBody);
+			request = new HttpEntity<>(post, headers);
+			json = new JSONObject(template
+					.postForEntity("http://localhost:" + port + "/api/publish", request, String.class).getBody());
+			assertEquals(json.getString("data"), "Published");
+			json = new JSONObject(template.exchange("http://localhost:" + port + "/api/getPost", HttpMethod.GET,
+					new HttpEntity<String>(headers), String.class).getBody());
+			JSONArray arr = (JSONArray) json.get("data");
+			for (int i = 0; i < arr.length(); i++)
+				if (((JSONObject) arr.get(i)).getString("title").contentEquals(postTitle)
+						&& ((JSONObject) arr.get(i)).getString("body").contentEquals(postBody)) {
+					postId = ((JSONObject) arr.get(i)).getInt("post_id");
+					break;
+				}
+			assert (postId > -1);
 		} catch (Exception e) {
 			e.printStackTrace();
 			assert (false);

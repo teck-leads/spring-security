@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.techleads.app.dto.LoginDto;
 import com.techleads.app.dto.PostDTO;
 import com.techleads.app.model.Posts;
+import com.techleads.app.model.PostsData;
 import com.techleads.app.model.UserRequest;
 import com.techleads.app.model.UserResponse;
 import com.techleads.app.model.Users;
@@ -117,15 +118,27 @@ public class UserController {
 	}
 
 	@GetMapping(value = { "/api/getPost" })
-	public ResponseEntity<List<Posts>> findAllPosts(Principal pricipal) {
+	public ResponseEntity<PostsData> findAllPosts(Principal pricipal) {
 		try {
-			List<Posts> postsList=new ArrayList<>();
+			List<Posts> postsList = new ArrayList<>();
+			List<PostDTO> dtos = new ArrayList<>();
+			PostsData data = new PostsData();
 			if (null != pricipal) {
 				Users user = userService.findByEmail(pricipal.getName());
-				 postsList = user.getPostsList();
-				return new ResponseEntity<>(postsList, HttpStatus.OK);
+				postsList = user.getPostsList();
+
+				postsList.forEach(post -> {
+					PostDTO dto = new PostDTO();
+					dto.setPost_id(post.getPostId());
+					dto.setTitle(post.getPostTitle());
+					dto.setBody(post.getPostBody());
+					dtos.add(dto);
+				});
+
+				data.setData(dtos);
+				return new ResponseEntity<>(data, HttpStatus.OK);
 			} else {
-				return new ResponseEntity<>(postsList, HttpStatus.OK);
+				return new ResponseEntity<>(data, HttpStatus.OK);
 			}
 		} catch (Exception e) {
 			throw e;
