@@ -147,6 +147,19 @@ class JwtSbBlogApiApplicationTests {
 			assert (false);
 		}
 	}
+	@Test
+	public void test4_postCount() {
+		try {
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("authorization", "Bearer " + jwt);
+			JSONObject json = new JSONObject(template.exchange("http://localhost:" + port + "/api/getPostCount",
+					HttpMethod.GET, new HttpEntity<String>(headers), String.class).getBody());
+			assertEquals(json.getInt("data"), postCount + 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert (false);
+		}
+	}
 
 	
 }
