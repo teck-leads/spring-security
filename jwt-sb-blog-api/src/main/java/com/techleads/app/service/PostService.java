@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.techleads.app.dto.PostDTO;
+import com.techleads.app.dto.UpdatePostDTO;
 import com.techleads.app.model.Posts;
 import com.techleads.app.model.UserResponse;
 import com.techleads.app.model.Users;
@@ -17,6 +18,20 @@ public class PostService {
 	private PostRepository postRepository;
 	private String POST_SAVED="Published";
 	private String POST_BODY_EMPTY="body should not be empty";
+	
+	
+	public Posts updatePost(UpdatePostDTO dto) {
+		Posts post = new Posts();
+		Optional<Posts> findById = postRepository.findById(dto.getPost_id());
+		if (findById.isPresent()) {
+			post = findById.get();
+			post.setPostTitle(dto.getTitle());
+			post.setPostBody(dto.getBody());
+			postRepository.save(post);
+		}
+		return post;
+	}
+	
 	
 	public UserResponse savePost(PostDTO dto, Users user) {
 		try {

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.techleads.app.dto.LoginDto;
 import com.techleads.app.dto.PostDTO;
+import com.techleads.app.dto.UpdatePostDTO;
 import com.techleads.app.model.PostData;
 import com.techleads.app.model.Posts;
 import com.techleads.app.model.PostsData;
@@ -112,6 +113,25 @@ public class UserController {
 			}else {
 				postDTO.setData("Unable to read JSON value");
 				return new ResponseEntity<>(postDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	/*update a POST */
+	@PostMapping(value = { "/api/updatePost" })
+	public ResponseEntity<UserResponse> updatePost(@RequestBody UpdatePostDTO postDto,Principal pricipal) {
+		try {
+			UserResponse resp =new UserResponse();
+			if(null!=pricipal) {
+				postService.updatePost(postDto);
+				resp.setData("Post updated");
+				return new ResponseEntity<>(resp, HttpStatus.OK);
+			}else {
+				resp.setData("Post not updated");
+				return new ResponseEntity<>(resp, HttpStatus.OK);
 			}
 			
 		} catch (Exception e) {

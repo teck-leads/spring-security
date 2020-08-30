@@ -30,6 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.techleads.app.dto.LoginDto;
 import com.techleads.app.dto.PostDTO;
+import com.techleads.app.dto.UpdatePostDTO;
 
 @TestMethodOrder(Alphanumeric.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -197,6 +198,31 @@ class JwtSbBlogApiApplicationTests {
 				}
 			}
 			assert (pass);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert (false);
+		}
+	}
+	
+	@Test
+	public void test7_updatePost() {
+		try {
+			UpdatePostDTO post = new UpdatePostDTO();
+			post.setPost_id(postId);
+			post.setTitle(postTitle);
+			String newBody = generateString();
+			post.setBody(newBody);
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("authorization", "Bearer " + jwt);
+			HttpEntity<UpdatePostDTO> request = new HttpEntity<>(post, headers);
+			JSONObject json = new JSONObject(template
+					.postForEntity("http://localhost:" + port + "/api/updatePost", request, String.class).getBody());
+			assertEquals(json.getString("data"), "Post updated");
+			json = new JSONObject(template.exchange("http://localhost:" + port + "/api/getPost/" + postId,
+					HttpMethod.GET, new HttpEntity<String>(headers), String.class).getBody()).getJSONObject("data");
+			assertEquals(json.getInt("post_id"), postId);
+			assertEquals(json.getString("title"), postTitle);
+			assertEquals(json.getString("body"), newBody);
 		} catch (Exception e) {
 			e.printStackTrace();
 			assert (false);
