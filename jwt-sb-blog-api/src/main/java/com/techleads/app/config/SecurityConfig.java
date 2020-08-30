@@ -38,18 +38,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
 
-
-				.authorizeRequests().antMatchers("/api/getPostCount","/register", "/login/", "/h2-console/**").permitAll()
+				.authorizeRequests()
+				.antMatchers("/api/getPost","/api/publish", "/api/getPostCount", "/register", "/login/", "/h2-console/**")
+				.permitAll()
 				.anyRequest()
-				.authenticated().and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
+				.authenticated()
 				.and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.exceptionHandling()
+				.authenticationEntryPoint(authenticationEntryPoint)
+				.and()
+				.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				// Verify user for 2nd request onwards
 				.and()
 				// register filter from 2nd request onwards
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 
-		http.csrf().ignoringAntMatchers("/api/getPostCount","/register", "/login/", "/h2-console/**");
+		http.csrf().ignoringAntMatchers("/api/getPost","/api/publish", "/api/getPostCount", "/register", "/login/", "/h2-console/**");
 		http.headers().frameOptions().sameOrigin();
 	}
 

@@ -1,6 +1,8 @@
 package com.techleads.app.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +18,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techleads.app.dto.LoginDto;
+import com.techleads.app.dto.PostDTO;
 import com.techleads.app.model.Posts;
 import com.techleads.app.model.UserRequest;
 import com.techleads.app.model.UserResponse;
 import com.techleads.app.model.Users;
+import com.techleads.app.service.PostService;
 import com.techleads.app.service.UserService;
 import com.techleads.app.util.JWTUtil;
-
+//https://spring.io/guides/tutorials/bookmarks/
 @RestController
 public class UserController {
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private PostService postService;
 	@Autowired
 	private JWTUtil jWTUtil;
 	@Autowired
@@ -53,7 +59,7 @@ public class UserController {
 			}else {
 				
 				// validate username/pwd with db
-				Authentication authenticate = authenticationManager.authenticate(
+				/*Authentication authenticate = */authenticationManager.authenticate(
 						new UsernamePasswordAuthenticationToken(userRequest.getEmail(), userRequest.getPassword()));
 				String token = jWTUtil.generateToken(userRequest.getEmail());
 				userRequest.setToken(token);
@@ -89,22 +95,42 @@ public class UserController {
 		}
 
 	}
-/*================================================================*/
-	// Validate user and generate token
-	/* working version-1
-	@PostMapping(value = { "/login" })
-	public ResponseEntity<UserLoginResponse> loginUser(@RequestBody UserRequest userRequest) {
+	
+	/*Save a POST */
+	@PostMapping(value = { "/api/publish" })
+	public ResponseEntity<PostDTO> savePost(@RequestBody PostDTO postDto,Principal pricipal) {
+		try {
+			PostDTO postDTO =new PostDTO();
+			if(null!=pricipal) {
+				Users user = userService.findByEmail(pricipal.getName());
+				UserResponse response = postService.savePost(postDto, user);
+				postDTO.setData(response.getData());
+				return new ResponseEntity<>(postDTO, HttpStatus.OK);
+			}else {
+				postDTO.setData("Unable to read JSON value");
+				return new ResponseEntity<>(postDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			
+		} catch (Exception e) {
+			throw e;
+		}
+	}
 
-		// validate username/pwd with db
-		Authentication authenticate = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(userRequest.getUsername(), userRequest.getPassword()));
-		String token = jWTUtil.generateToken(userRequest.getUsername());
-		UserLoginResponse response = new UserLoginResponse();
-		response.setToken(token);
-		response.setMsg("Authentication successful!");
-		return new ResponseEntity<>(response, HttpStatus.OK);
+	@GetMapping(value = { "/api/getPost" })
+	public ResponseEntity<List<Posts>> findAllPosts(Principal pricipal) {
+		try {
+			List<Posts> postsList=new ArrayList<>();
+			if (null != pricipal) {
+				Users user = userService.findByEmail(pricipal.getName());
+				 postsList = user.getPostsList();
+				return new ResponseEntity<>(postsList, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(postsList, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			throw e;
+		}
 
 	}
-	*/
-	/*================================================================*/
+
 }

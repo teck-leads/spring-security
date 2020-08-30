@@ -14,9 +14,10 @@ public class PostDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	String title;
+	private String title;
 
-	String body;
+	private String body;
+	private String data;
 
 	
 }

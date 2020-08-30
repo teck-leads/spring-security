@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -17,6 +18,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +29,7 @@ import lombok.ToString;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude="postsList")
+@ToString(exclude= {"postsList","roles"})
 @Entity
 @Table(name = "users")
 public class Users implements Serializable {
@@ -37,8 +41,9 @@ public class Users implements Serializable {
     private String name;
     private String email;
     private String password;
-   
-    @OneToMany(mappedBy = "publishedBy", fetch = FetchType.EAGER)
+    
+    @JsonManagedReference
+    @OneToMany(mappedBy = "publishedBy", fetch = FetchType.LAZY)
     private List<Posts> postsList=new ArrayList<>();
     
     @ElementCollection(fetch = FetchType.EAGER)
