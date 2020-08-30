@@ -18,6 +18,7 @@ public class PostService {
 	private PostRepository postRepository;
 	private String POST_SAVED="Published";
 	private String POST_BODY_EMPTY="body should not be empty";
+	private String POST_DEL="Post Deleted";
 	
 	
 	public Posts updatePost(UpdatePostDTO dto) {
@@ -68,6 +69,23 @@ public class PostService {
 
 		}
 		return dto;
+
+	}
+	
+	public UserResponse deletePostById(Integer id) {
+		try {
+			UserResponse respo = new UserResponse();
+			Optional<Posts> findById = postRepository.findById(id);
+
+			if (findById.isPresent()) {
+				postRepository.deleteById(id);
+				respo.setData(POST_DEL);
+			}
+
+			return respo;
+		} catch (Exception e) {
+			throw e;
+		}
 
 	}
 

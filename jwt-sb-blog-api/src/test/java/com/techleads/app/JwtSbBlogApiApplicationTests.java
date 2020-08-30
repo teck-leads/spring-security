@@ -228,6 +228,23 @@ class JwtSbBlogApiApplicationTests {
 			assert (false);
 		}
 	}
+	
+	@Test
+	public void test8_delPost() {
+		try {
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("authorization", "Bearer " + jwt);
+			JSONObject json = new JSONObject(template.exchange("http://localhost:" + port + "/api/deletePost/" + postId,
+					HttpMethod.GET, new HttpEntity<String>(headers), String.class).getBody());
+			assertEquals(json.getString("data"), "Post Deleted");
+			json = new JSONObject(template.exchange("http://localhost:" + port + "/api/getPost/" + postId,
+					HttpMethod.GET, new HttpEntity<String>(headers), String.class).getBody());
+			assertEquals(json.getString("data"), "Post Not Found");
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert (false);
+		}
+	}
 
 	
 }
