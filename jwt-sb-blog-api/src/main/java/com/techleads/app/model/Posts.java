@@ -35,11 +35,16 @@ public class Posts implements Serializable {
     private Integer postId;
     private String postTitle;
     private String postBody;
+    
+  
     @JsonBackReference
     @ManyToOne
     private Users publishedBy;
+    private String created_by;
+    
     @CreationTimestamp
     private Date createdOn;
+    
     @UpdateTimestamp
     private Date updatedOn;
     private Boolean isDeleted;

@@ -1,6 +1,7 @@
 package com.techleads.app.service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -14,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.techleads.app.model.Posts;
 import com.techleads.app.model.UserResponse;
 import com.techleads.app.model.Users;
 import com.techleads.app.repository.UserRepository;
@@ -52,6 +54,18 @@ public class UserService implements UserDetailsService {
 		} catch (Exception e) {
 			throw e;
 		}
+		
+	}
+	
+	public Users findUserById(Integer id) {
+		Optional<Users> findById = userRepository.findById(id);
+		
+		Users user=new Users();
+		if(findById.isPresent()) {
+			user = findById.get();
+			
+		}
+		return user;
 		
 	}
 	

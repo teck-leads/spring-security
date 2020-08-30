@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable()
 
 				.authorizeRequests()
-				.antMatchers("/api/getPost/**","/api/publish", "/api/getPostCount", "/register", "/login/", "/h2-console/**")
+				.antMatchers("/api/getPostByUser/**","/api/getPost/**","/api/publish", "/api/getPostCount", "/register", "/login/", "/h2-console/**")
 				.permitAll()
 				.anyRequest()
 				.authenticated()
@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// register filter from 2nd request onwards
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 
-		http.csrf().ignoringAntMatchers("/api/getPost/**","/api/publish", "/api/getPostCount", "/register", "/login/", "/h2-console/**");
+		http.csrf().ignoringAntMatchers("/api/getPostByUser/**","/api/getPost/**","/api/publish", "/api/getPostCount", "/register", "/login/", "/h2-console/**");
 		http.headers().frameOptions().sameOrigin();
 	}
 

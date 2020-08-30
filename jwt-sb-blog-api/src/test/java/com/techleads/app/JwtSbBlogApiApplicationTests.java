@@ -177,6 +177,31 @@ class JwtSbBlogApiApplicationTests {
 			assert (false);
 		}
 	}
+	
+	@Test
+	public void test6_getPostByUserId() {
+		try {
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("authorization", "Bearer " + jwt);
+			JSONObject json;
+			boolean pass = false;
+			for (int i = 0; i < 10; i++) {
+				json = new JSONObject(template.exchange("http://localhost:" + port + "/api/getPostByUser/" + i,
+						HttpMethod.GET, new HttpEntity<String>(headers), String.class).getBody());
+				if (!json.get("data").toString().contentEquals("No posts by user Id " + i)
+						&& json.getJSONArray("data").getJSONObject(0).getString("title").contentEquals(postTitle)
+						&& json.getJSONArray("data").getJSONObject(0).getString("body").contentEquals(postBody)
+						&& json.getJSONArray("data").getJSONObject(0).getString("created_by").contentEquals(user)) {
+					pass = true;
+					break;
+				}
+			}
+			assert (pass);
+		} catch (Exception e) {
+			e.printStackTrace();
+			assert (false);
+		}
+	}
 
 	
 }

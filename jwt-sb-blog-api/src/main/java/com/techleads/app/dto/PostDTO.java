@@ -19,5 +19,6 @@ public class PostDTO implements Serializable {
 
 	private String body;
 	private String data;
+	private String created_by;
 	
 }

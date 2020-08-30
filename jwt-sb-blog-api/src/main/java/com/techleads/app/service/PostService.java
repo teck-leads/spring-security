@@ -27,7 +27,7 @@ public class PostService {
 				Posts post = new Posts();
 				post.setPostTitle(dto.getTitle());
 				post.setPostBody(dto.getBody());
-				
+				post.setCreated_by(user.getName());
 				post.setPublishedBy(user);
 				
 				postRepository.save(post);

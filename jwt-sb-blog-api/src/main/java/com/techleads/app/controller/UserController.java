@@ -167,5 +167,41 @@ public class UserController {
 		}
 
 	}
+	
+	@GetMapping(value = { "/api/getPostByUser/{id}" })
+	public ResponseEntity<PostsData> findPostsByUserId(@PathVariable("id") Integer userId,Principal pricipal) {
+		try {
+			List<Posts> postsList = new ArrayList<>();
+			List<PostDTO> dtos = new ArrayList<>();
+			PostsData data = new PostsData();
+			if (null != pricipal) {
+				Users user = userService.findUserById(userId);
+				postsList = user.getPostsList();
+
+				postsList.forEach(post -> {
+					PostDTO dto = new PostDTO();
+					dto.setPost_id(post.getPostId());
+					dto.setTitle(post.getPostTitle());
+					dto.setBody(post.getPostBody());
+					dto.setCreated_by(post.getCreated_by());
+					dtos.add(dto);
+				});
+				
+				if(dtos.size()==0) {
+					PostDTO dto = new PostDTO();
+					dto.setData("No posts by user Id "+userId);
+					dtos.add(dto);
+				}
+
+				data.setData(dtos);
+				return new ResponseEntity<>(data, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(data, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+
+	}
 
 }
