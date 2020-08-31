@@ -2,7 +2,6 @@ package com.techleads.app.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,16 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.techleads.app.dto.LoginDto;
 import com.techleads.app.dto.PostDTO;
 import com.techleads.app.dto.UpdatePostDTO;
-import com.techleads.app.model.PostData;
-import com.techleads.app.model.PostsEmpty;
 import com.techleads.app.model.Posts;
-import com.techleads.app.model.PostsData;
-import com.techleads.app.model.UserRequest;
-import com.techleads.app.model.UserResponse;
 import com.techleads.app.model.Users;
 import com.techleads.app.service.PostService;
 import com.techleads.app.service.UserService;
 import com.techleads.app.util.JWTUtil;
+import com.techleads.app.util.PostData;
+import com.techleads.app.util.PostsData;
+import com.techleads.app.util.PostsEmpty;
+import com.techleads.app.util.UserResponse;
 
 //https://spring.io/guides/tutorials/bookmarks/
 @RestController

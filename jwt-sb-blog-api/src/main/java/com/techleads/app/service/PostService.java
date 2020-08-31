@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import com.techleads.app.dto.PostDTO;
 import com.techleads.app.dto.UpdatePostDTO;
 import com.techleads.app.model.Posts;
-import com.techleads.app.model.UserResponse;
 import com.techleads.app.model.Users;
 import com.techleads.app.repository.PostRepository;
+import com.techleads.app.util.UserResponse;
 
 @Service
 public class PostService {

@@ -1,4 +1,4 @@
-package com.techleads.app.model;
+package com.techleads.app.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
